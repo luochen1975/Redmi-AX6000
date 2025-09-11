@@ -38,16 +38,16 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ 自定义上游 DNS 服务器
 ✅ Fake-IP 持久化
-✅ Nameserver-Policy
-"geosite:!cn":
-  - tls://dns.google#⚡️ 国际代理
-
 
 ✅ NameServer
-   - 223.5.5.5
+  - tls://dns.google#⚡️ 国际代理
+
+❌ FallBack
+
+✅ Default-NameServer
+  - 223.5.5.5
     ✅ 直连域名解析
     ✅ 节点域名解析
-
 
 ✅ 启用 TCP 并发
 ❌ Geodata 数据加载方式 禁用
