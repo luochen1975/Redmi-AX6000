@@ -81,10 +81,10 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ```
 
-```
+
 **使用TProxy代理所有流量**
   开发者选项脚本
-
+```
 # 删除自带的规则
 iptables -t nat -D PREROUTING -p tcp -j openclash
 iptables -t nat -D OUTPUT -j openclash_output
