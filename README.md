@@ -9,9 +9,9 @@
 
 ✅ 使用 Meta 内核
 
-✅ 运行模式 Fake-IP（增强）模式
+✅ 运行模式 Redir-Host（兼容）模式
 
-✅ 启用时服务器必须支持 UDP 转发
+✅ UDP 流量转发
 
 
 ✅ 路由本机代理
@@ -36,10 +36,13 @@
 Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ 自定义上游 DNS 服务器
-✅ Fake-IP 持久化
+
+✅ Nameserver-Policy
+"geosite:cn,private":
+  - 223.5.5.5
 
 ✅ NameServer
-  - tls://dns.google#⚡️ 国际代理
+  - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
 
 ❌ FallBack
 
@@ -54,11 +57,6 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 ✅ 启用流量（域名）探测
 ✅ 探测（嗅探）纯 IP 连接
 ✅ 自定义流量探测（嗅探）设置
-
-手动更新为 mihomo 内核 mihomo-linux-arm64-v1.19.2.gz
-支持 Hysteria2节点
-
-✅  DHCP/DNS  DNS 重定向 重定向客户端DNS到dnsmasq
 
 ```
 **IPV6 设置**
@@ -80,7 +78,6 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 ✅ RA 标记 无
 
 ```
-
 
 **使用TProxy代理所有流量**
   开发者选项脚本
