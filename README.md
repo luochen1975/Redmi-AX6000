@@ -80,3 +80,32 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 ✅ RA 标记 无
 
 ```
+
+```
+**使用TProxy代理所有流量**
+  开发者选项脚本
+
+# 删除自带的规则
+iptables -t nat -D PREROUTING -p tcp -j openclash
+iptables -t nat -D OUTPUT -j openclash_output
+iptables -t mangle -D PREROUTING -p udp -j openclash
+iptables -t mangle -D OUTPUT -p udp -j openclash_output
+
+# 重置规则
+iptables -t mangle -F PREROUTING
+iptables -t mangle -F clash_tproxy
+iptables -t mangle -N clash_tproxy
+
+iptables -t mangle -A clash_tproxy -p udp -m udp --sport 500 -j RETURN
+iptables -t mangle -A clash_tproxy -m set --match-set localnetwork dst -j RETURN
+
+# 非以下端口的流量不会经过内核，可以自己定，比如BT，这些流量方便走FORWARD链能享受到flow offloading
+iptables -t mangle -A clash_tproxy -p tcp -m multiport ! --dport 25,53,80,143,443,587,993 -j RETURN
+iptables -t mangle -A clash_tproxy -p udp -m multiport ! --dport 25,53,80,143,443,587,993 -j RETURN
+
+iptables -t mangle -A clash_tproxy -p udp -j TPROXY --on-port 7895 --tproxy-mark 0x162
+iptables -t mangle -A clash_tproxy -p tcp -j TPROXY --on-port 7895 --tproxy-mark 0x162
+
+
+iptables -t mangle -A PREROUTING -j clash_tproxy
+```
