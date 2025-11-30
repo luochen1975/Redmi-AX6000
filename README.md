@@ -37,15 +37,14 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ NameServer
   - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
-  - tls://8.8.8.8#⚡️ 国际代理
+  - HTTPS://doh.tiar.app/dns-query#⚡️ 国际代理
 
 ❌ FallBack
 
 ✅ Default-NameServer
-  - 223.5.5.5
-  - 119.29.29.29
-    ✅ 直连域名解析
-    ✅ 节点域名解析
+  - 运营商DNS
+  - tls://223.5.5.5
+  - tls://119.29.29.29
 
 ✅ 启用 TCP 并发
 ❌ Geodata 数据加载方式 禁用
@@ -76,7 +75,7 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 ```
 
 **使用TProxy代理所有流量**
-  开发者选项脚本
+  插件设置 开发者选项
 ```
 # 删除自带的规则
 iptables -t nat -D PREROUTING -p tcp -j openclash
