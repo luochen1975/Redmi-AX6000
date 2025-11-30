@@ -7,8 +7,6 @@
 ```
 **插件设置**
 
-✅ 使用 Meta 内核
-
 ✅ 运行模式 Redir-Host（兼容）模式
 
 ✅ UDP 流量转发
@@ -44,13 +42,13 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ NameServer
   - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
-  - HTTPS://1.0.0.1/dns-query#⚡️ 国际代理
-  - HTTPS://doh.tiarap.org/dns-query#⚡️ 国际代理
+  - tls://8.8.8.8#⚡️ 国际代理
 
 ❌ FallBack
 
 ✅ Default-NameServer
   - 223.5.5.5
+  - 119.29.29.29
     ✅ 直连域名解析
     ✅ 节点域名解析
 
@@ -100,30 +98,13 @@ iptables -t mangle -A clash_tproxy -p udp -m udp --sport 500 -j RETURN
 iptables -t mangle -A clash_tproxy -m set --match-set localnetwork dst -j RETURN
 
 # 非以下端口的流量不会经过内核，可以自己定，比如BT，这些流量方便走FORWARD链能享受到flow offloading
-iptables -t mangle -A clash_tproxy -p tcp -m multiport ! --dport 25,53,80,143,443,587,993 -j RETURN
-iptables -t mangle -A clash_tproxy -p udp -m multiport ! --dport 25,53,80,143,443,587,993 -j RETURN
+iptables -t mangle -A clash_tproxy -p tcp -m multiport ! --dport 25,53,80,443,853 -j RETURN
+iptables -t mangle -A clash_tproxy -p udp -m multiport ! --dport 25,53,80,443,853 -j RETURN
 
 iptables -t mangle -A clash_tproxy -p udp -j TPROXY --on-port 7895 --tproxy-mark 0x162
 iptables -t mangle -A clash_tproxy -p tcp -j TPROXY --on-port 7895 --tproxy-mark 0x162
 
 
 iptables -t mangle -A PREROUTING -j clash_tproxy
-```
-```
-配置文件加入
-#
-experimental:
-  quic-go-disable-gso: true
-#
-dns:
-  prefer-h3: true
-#
-```
-```
-geodata-mode: true
-geo-auto-update: true # 是否自动更新 GEO 数据
-geo-update-interval: 168 # GEO 数据更新间隔，单位为小时
-geox-url:
-  geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip-lite.dat"
-  geosite: "https://testingcf.jsdelivr.net/gh/v2fly/domain-list-community@release/dlc.dat"
+
 ```
