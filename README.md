@@ -43,6 +43,8 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ NameServer
   - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
+  - HTTPS://1.0.0.1/dns-query#⚡️ 国际代理
+  - HTTPS://doh.tiarap.org/dns-query#⚡️ 国际代理
 
 ❌ FallBack
 
@@ -105,4 +107,13 @@ iptables -t mangle -A clash_tproxy -p tcp -j TPROXY --on-port 7895 --tproxy-mark
 
 
 iptables -t mangle -A PREROUTING -j clash_tproxy
+```
+```
+配置文件加入
+
+dns:
+  prefer-h3: true
+#
+experimental:
+  quic-go-disable-gso: true
 ```
