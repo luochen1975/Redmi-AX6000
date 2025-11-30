@@ -36,6 +36,7 @@
 Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ 自定义上游 DNS 服务器
+✅ 遵循规则(respect-rules)
 
 ✅ Nameserver-Policy
 "geosite:cn,private":
