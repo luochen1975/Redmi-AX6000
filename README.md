@@ -34,11 +34,6 @@
 Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ 自定义上游 DNS 服务器
-✅ 遵循规则(respect-rules)
-
-✅ Nameserver-Policy
-"geosite:cn,private":
-  - 223.5.5.5
 
 ✅ NameServer
   - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
