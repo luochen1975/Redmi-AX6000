@@ -110,17 +110,18 @@ iptables -t mangle -A PREROUTING -j clash_tproxy
 ```
 ```
 配置文件加入
-
-dns:
-  prefer-h3: true
 #
 experimental:
   quic-go-disable-gso: true
+#
+dns:
+  prefer-h3: true
+#
 ```
 ```
 geodata-mode: true
-geo-auto-update: true
-geo-update-interval: 24
+geo-auto-update: true # 是否自动更新 GEO 数据
+geo-update-interval: 168 # GEO 数据更新间隔，单位为小时
 geox-url:
   geoip: "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@release/geoip-lite.dat"
   geosite: "https://testingcf.jsdelivr.net/gh/v2fly/domain-list-community@release/dlc.dat"
