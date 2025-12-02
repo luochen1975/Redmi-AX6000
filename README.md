@@ -37,14 +37,11 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ NameServer
   - HTTPS://8.8.8.8/dns-query#⚡️ 国际代理
-  - HTTPS://doh.tiar.app/dns-query#⚡️ 国际代理
 
 ❌ FallBack
 
 ✅ Default-NameServer
   - 运营商DNS
-  - tls://223.5.5.5
-  - tls://119.29.29.29
 
 ✅ 启用 TCP 并发
 ❌ Geodata 数据加载方式 禁用
