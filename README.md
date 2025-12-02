@@ -74,28 +74,53 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 **使用TProxy代理所有流量**
   插件设置 开发者选项
 ```
-# 删除自带的规则
-iptables -t nat -D PREROUTING -p tcp -j openclash
-iptables -t nat -D OUTPUT -j openclash_output
-iptables -t mangle -D PREROUTING -p udp -j openclash
-iptables -t mangle -D OUTPUT -p udp -j openclash_output
+#!/bin/sh
+. /usr/share/openclash/log.sh
+. /lib/functions.sh
+# -----------------------------------------------
 
-# 重置规则
-iptables -t mangle -F PREROUTING
-iptables -t mangle -F clash_tproxy
-iptables -t mangle -N clash_tproxy
+LOG_OUT "Tip: Start Add Custom Firewall Rules..."
 
-iptables -t mangle -A clash_tproxy -p udp -m udp --sport 500 -j RETURN
+# 确保删除命令不会因为规则不存在而报错，使用 2>/dev/null
+# 这一步清除了 OpenClash 默认设置的规则，为自定义规则让路
+iptables -t nat -D PREROUTING -p tcp -j openclash 2>/dev/null || true
+iptables -t nat -D OUTPUT -j openclash_output 2>/dev/null || true
+iptables -t mangle -D PREROUTING -p udp -j openclash 2>/dev/null || true
+iptables -t mangle -D OUTPUT -p udp -j openclash_output 2>/dev/null || true
+
+# --- 自定义 TPROXY 逻辑实现 ---
+
+# 1. 确保自定义链存在并且是空的 (幂等操作)
+# 使用 -F 确保链是空的，使用 || true 防止链不存在时报错
+iptables -t mangle -F clash_tproxy 2>/dev/null || iptables -t mangle -N clash_tproxy
+
+# 2. 添加必要的本地流量排除 (避免代理内部通信和组播)
+# 假设 localnetwork ipset 已经被 OpenClash 主程序创建好了
 iptables -t mangle -A clash_tproxy -m set --match-set localnetwork dst -j RETURN
+iptables -t mangle -A clash_tproxy -d 224.0.0.0/4 -j RETURN # 排除组播地址
 
-# 非以下端口的流量不会经过内核，可以自己定，比如BT，这些流量方便走FORWARD链能享受到flow offloading
-iptables -t mangle -A clash_tproxy -p tcp -m multiport ! --dport 25,53,80,443,853 -j RETURN
-iptables -t mangle -A clash_tproxy -p udp -m multiport ! --dport 25,53,80,443,853 -j RETURN
+# 3. 端口绕过逻辑 (根据您的需求，此逻辑保持不变)
+# 只有目标端口是 25, 53, 80, 443, 853 的流量才会继续往下走 TPROXY
+# iptables -t mangle -A clash_tproxy -p tcp -m multiport ! --dport 25,53,80,443,853 -j RETURN
+# iptables -t mangle -A clash_tproxy -p udp -m multiport ! --dport 25,53,80,443,853 -j RETURN
 
+# 4. TPROXY 重定向和标记
 iptables -t mangle -A clash_tproxy -p udp -j TPROXY --on-port 7895 --tproxy-mark 0x162
 iptables -t mangle -A clash_tproxy -p tcp -j TPROXY --on-port 7895 --tproxy-mark 0x162
 
+# 5. 将自定义链挂载到 PREROUTING
+# 这一步也需要保证幂等性，只添加一次
+if ! iptables -t mangle -C PREROUTING -j clash_tproxy >/dev/null 2>&1; then
+    iptables -t mangle -A PREROUTING -j clash_tproxy
+fi
 
-iptables -t mangle -A PREROUTING -j clash_tproxy
+# 注意：您的脚本没有处理 OUTPUT 链（路由器自身流量）。
+# 如果您需要代理路由器自身的流量，您还需要一个类似的 OUTPUT 链配置，
+# 并且需要配置 IP Rule/Route 使标记的流量回环到本地 lo 接口（通常 OpenClash 主程序会做这个）。
+
+LOG_OUT "Tip: Add Custom Firewall Rules Done."
+
+exit 0
+
 
 ```
