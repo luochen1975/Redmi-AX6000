@@ -77,7 +77,9 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 #!/bin/sh
 . /usr/share/openclash/log.sh
 . /lib/functions.sh
-# -----------------------------------------------
+
+# This script is called by /etc/init.d/openclash
+# Add your custom firewall rules here, they will be added after the end of the OpenClash iptables rules
 
 LOG_OUT "Tip: Start Add Custom Firewall Rules..."
 
@@ -114,13 +116,7 @@ if ! iptables -t mangle -C PREROUTING -j clash_tproxy >/dev/null 2>&1; then
     iptables -t mangle -A PREROUTING -j clash_tproxy
 fi
 
-# 注意：您的脚本没有处理 OUTPUT 链（路由器自身流量）。
-# 如果您需要代理路由器自身的流量，您还需要一个类似的 OUTPUT 链配置，
-# 并且需要配置 IP Rule/Route 使标记的流量回环到本地 lo 接口（通常 OpenClash 主程序会做这个）。
-
 LOG_OUT "Tip: Add Custom Firewall Rules Done."
 
 exit 0
-
-
 ```
