@@ -31,7 +31,7 @@
 
 **覆写设置**
 
-Github 地址修改 https://testingcf.jsdelivr.net/
+Github 地址修改  https://cdn.jsdelivr.net/
 
 ✅ 自定义上游 DNS 服务器
 
@@ -42,6 +42,8 @@ Github 地址修改 https://testingcf.jsdelivr.net/
 
 ✅ Default-NameServer
   - 运营商DNS
+  ✅ 用于解析直连域名的 IP 地址（仅 Meta 内核）
+  ✅ 用于解析节点域名的 IP 地址（仅 Meta 内核）
 
 ✅ 启用 TCP 并发
 ❌ Geodata 数据加载方式 禁用
